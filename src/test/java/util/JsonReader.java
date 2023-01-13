@@ -54,7 +54,7 @@ public class JsonReader {
         } catch (Exception e) {
             System.err.println("Exception : jsonReader Exception 발생");
         } finally{
-            System.out.println("jsonFilePath : " + jsonFilePath);
+            //System.out.println("jsonFilePath : " + jsonFilePath);
         }
 
         return testCase;

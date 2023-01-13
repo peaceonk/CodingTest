@@ -4,6 +4,12 @@ import java.lang.Math;
 
 class Solution {
     
+    public Object solution(Object ... params) throws Exception {
+        System.out.println(  Integer.parseInt(params[0].toString()) );
+        return solution( Integer.parseInt(params[0].toString()) );
+        //return solution( (int) params[0] );
+    }
+
     /**
      * 
      * @param storey : 현재 층

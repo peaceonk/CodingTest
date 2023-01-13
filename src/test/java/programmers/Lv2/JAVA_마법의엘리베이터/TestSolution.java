@@ -1,34 +1,19 @@
 package programmers.Lv2.JAVA_마법의엘리베이터;
 
-import org.assertj.core.internal.Arrays;
-import org.json.simple.parser.ParseException;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.Assert.assertThat;
 import static org.junit.Assume.assumeTrue;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.hamcrest.CoreMatchers.is;
 
-import util.JsonReader;
-
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+
+import util.JsonReader;
 
 record TestCase(Object param_1, Object param_2, Object result) {}
 
@@ -37,14 +22,13 @@ class TestSolution {
 
     final String solutionLevelPath = "Lv2\\";
     final String solutionFolderPath = "JAVA_마법의엘리베이터";
-    final int testTimeLimit = 1000;
+    final int test_time_limit = 1000;
 
     final String solutionFilePath = "\\testcase.json";
     final String solutionEachPath = solutionLevelPath + solutionFolderPath + solutionFilePath;
 
-    JsonReader jsonReader = new JsonReader();
+    JsonReader json_reader = new JsonReader();
     Solution solution = new Solution();
-    Map testCaseMap = new HashMap();
     Boolean testExecute = false;
 
     List<Arguments> arguList = new ArrayList<Arguments>();
@@ -53,32 +37,26 @@ class TestSolution {
     void beforeAllTest() {
         System.out.println("========================================================Test initiate========================================================");
 
-        testCaseMap = jsonReader.jsonReader(solutionEachPath);
-        //System.out.println(testCaseMap.toString());
+        Map testcase_map = new HashMap();
 
-        if(testCaseMap == null && testCaseMap.isEmpty()){
-            System.out.println("Warning : Test has been stopped. testCaseMap is Empty.");
+        testcase_map = json_reader.jsonReader(solutionEachPath);
+        //System.out.println(testcase_map.toString());
+
+        if(testcase_map == null && testcase_map.isEmpty()){
             testExecute = false;
+            System.out.println("Warning : Test has been stopped. testcase_map is Empty.");
         }else {
             testExecute = true;
             
-            Iterator<String> keys = testCaseMap.keySet().iterator();
+            List<String> testcase_keys_list = new ArrayList<>( testcase_map.keySet() );
 
-            while( keys.hasNext() ){
-                String key = keys.next();
+            // 키 값으로 오름차순 정렬
+            Collections.sort(testcase_keys_list);
 
-                List<String> keySet = new ArrayList<>(map.keySet());
-                
-                // 키 값으로 오름차순 정렬
-                Collections.sort(keySet);
-
-                for (String key : keySet) {
-                    System.out.print("Key : " + key);
-                    System.out.println(", Val : " + map.get(key));
-                }
-
-                arguList.add( Arguments.of(key, testCaseMap.get(key)));
+            for(String testcase_key : testcase_keys_list){
+                arguList.add( Arguments.of(testcase_key, testcase_map.get(testcase_key)));
             }
+            //System.out.println(testcase_keys_list.toString());
         }
 
         assumeTrue(testExecute);
@@ -99,48 +77,49 @@ class TestSolution {
         return arguList.stream();
     }
 
-    void solutionExecutor(Object ... params) throws Exception {
-
-        Object param_1 = params[0];
-        Object param_2 = params[1];
-        Object param_3 = params[2];
-        Object param_4 = params[3];
-        Object param_5 = params[4];
-
-        Object answer = solution.solution(16);
-    }
-
-
-    @Test
-    @Timeout(testTimeLimit)
+    @Timeout(test_time_limit)
     @ParameterizedTest(name = "TESTCASE : {0}, PARAM : {1}")
     @MethodSource("arguListToStream")
-    @DisplayName("코딩테스트 정답비교 테스트")
-    void test(String testcase_name, HashMap testcase_param) {
-        testcase_param.remove("result");
-        //System.out.println("testcaseParam : " + testcase_param.toString());
+    @DisplayName(solutionLevelPath + solutionFolderPath + "정답비교 테스트")
+    void test(String tc_name, HashMap tc_params) {
 
-        Object[] objectArray = testcase_param.entrySet().toArray();
-        System.out.print("objectArray["+objectArray.length + "] : ");
-        for(Object ob : objectArray ){
+        Object tc_result = tc_params.get("result");
+        tc_params.remove("result");
 
-            System.out.print( (String)ob.toString() + ", ");
+        List<String> tc_params_keys_list = new ArrayList<>( tc_params.keySet() );
+        Collections.sort(tc_params_keys_list);
+
+        //System.out.println( tc_params_keys_list.toString() );
+
+        List<Object> tc_params_list = new ArrayList<>();
+
+        for(String tc_params_key : tc_params_keys_list){
+            tc_params_list.add( tc_params.get(tc_params_key) );
         }
-        System.out.println("--");
 
+        Object[] tc_params_array = tc_params_list.toArray();
 
+        //System.out.println( (String) Arrays.toString(tc_params_array));
+
+        Object expected = tc_result;
         Object actual = new Object();
-        Object expected = 7;
-        
-        System.out.println("-----------------------------Solution Start-----------------------------");
-        try{
-            //solutionExecutor();
-            //actual = solution.solution(16);
-        } catch(Exception e) {
-            System.err.println("-------------------------Solution Source Error-------------------------");
-        }
-        System.out.println("-----------------------------Solution End-----------------------------");
 
+        if( actual.equals(null)  || expected.equals(null) ) testExecute = false;
+        assumeTrue(testExecute);
+        
+        System.out.println("-----------------------------" + tc_name + " Solution Start-----------------------------");
+        try{
+            actual = solution.solution(tc_params_array);
+            if(expected.getClass().getName() != actual.getClass().getName() ) new Exception("Warning");
+        } catch(Exception e) {
+            System.err.println("-------------------------" + tc_name + " Solution Source Error-------------------------");
+        }
+        System.out.println("-----------------------------" + tc_name + " Solution End-----------------------------");
+
+        System.out.println("expected  : " + expected  );
+        System.out.println("actual  : " + actual  );
+
+        assertEquals(expected, actual);
         //assertThat(actual, is(expected));
         
     }

@@ -1,17 +1,14 @@
 {
     "case_1" : {
-        "pram_1" : 9554,
-        "pram_2" : 9554,
+        "param_1" : 9554,
         "result" : 14
     },
     "case_2" : {
-        "pram_1" : 9354,
-        "pram_2" : 9354,
+        "param_1" : 9354,
         "result" : 14
     },
     "case_3" : {
         "param_1" : 4554,
-        "param_2" : 4554,
         "result" : 18
     }
 }
