@@ -7,30 +7,27 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.Assert.assertThat;
 import static org.junit.Assume.assumeTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.hamcrest.CoreMatchers.is;
 
 import java.util.*;
 import java.util.stream.Stream;
 
-import util.JsonReader;
-
-record TestCase(Object param_1, Object param_2, Object result) {}
+import utils.JsonReader;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TestSolution {
 
-    final String solutionLevelPath = "Lv2\\";
-    final String solutionFolderPath = "JAVA_마법의엘리베이터";
-    final int test_time_limit = 1000;
-
-    final String solutionFilePath = "\\testcase.json";
-    final String solutionEachPath = solutionLevelPath + solutionFolderPath + solutionFilePath;
-
-    JsonReader json_reader = new JsonReader();
     Solution solution = new Solution();
-    Boolean testExecute = false;
+    final int test_time_limit = 1000;
+    
+    JsonReader json_reader = new JsonReader();
 
+    String solutionPackagePath = solution.getClass().getPackage().getName();
+    final String solutionFolderPath = solutionPackagePath.replaceAll("\\.","/");
+    final String solutionFilePath = "/testcase.json";
+    final String solutionEachPath = solutionFolderPath + solutionFilePath;
+    Boolean testExecute = false;
+    
     List<Arguments> arguList = new ArrayList<Arguments>();
     
     @BeforeAll
@@ -70,7 +67,7 @@ class TestSolution {
 
     @AfterAll
     void afterAllTest(){
-        System.out.println("========================================================Test End========================================================");
+        System.out.println("========================================================Test Terminate========================================================");
     }
 
     Stream<Arguments> arguListToStream() {
@@ -80,13 +77,15 @@ class TestSolution {
     @Timeout(test_time_limit)
     @ParameterizedTest(name = "TESTCASE : {0}, PARAM : {1}")
     @MethodSource("arguListToStream")
-    @DisplayName(solutionLevelPath + solutionFolderPath + "정답비교 테스트")
+    //@DisplayName(solutionPackagePath + "정답비교 테스트")
     void test(String tc_name, HashMap tc_params) {
 
         Object tc_result = tc_params.get("result");
         tc_params.remove("result");
 
-        List<String> tc_params_keys_list = new ArrayList<>( tc_params.keySet() );
+        // System.out.println("tc_result : " + tc_params.get("result").getClass().getTypeName());
+
+        List<String> tc_params_keys_list = new ArrayList<String>( tc_params.keySet() );
         Collections.sort(tc_params_keys_list);
 
         //System.out.println( tc_params_keys_list.toString() );
@@ -101,27 +100,22 @@ class TestSolution {
 
         //System.out.println( (String) Arrays.toString(tc_params_array));
 
-        Object expected = tc_result;
-        Object actual = new Object();
-
-        if( actual.equals(null)  || expected.equals(null) ) testExecute = false;
-        assumeTrue(testExecute);
+        Object expected =null;
+        Object actual = null;
         
         System.out.println("-----------------------------" + tc_name + " Solution Start-----------------------------");
         try{
+            expected = tc_result;
             actual = solution.solution(tc_params_array);
-            if(expected.getClass().getName() != actual.getClass().getName() ) new Exception("Warning");
         } catch(Exception e) {
             System.err.println("-------------------------" + tc_name + " Solution Source Error-------------------------");
         }
         System.out.println("-----------------------------" + tc_name + " Solution End-----------------------------");
 
-        System.out.println("expected  : " + expected  );
-        System.out.println("actual  : " + actual  );
+        System.out.println("expected  : " + expected);
+        System.out.println("actual  : "+ actual);
 
-        assertEquals(expected, actual);
-        //assertThat(actual, is(expected));
-        
+        assertThat(actual, is(expected));
     }
 
 }

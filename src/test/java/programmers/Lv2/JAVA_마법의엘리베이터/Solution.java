@@ -3,11 +3,12 @@ package programmers.Lv2.JAVA_마법의엘리베이터;
 import java.lang.Math;
 
 class Solution {
-    
+
     public Object solution(Object ... params) throws Exception {
-        System.out.println(  Integer.parseInt(params[0].toString()) );
-        return solution( Integer.parseInt(params[0].toString()) );
-        //return solution( (int) params[0] );
+        System.out.println("Parameter : "+  Integer.parseInt(params[0].toString()) );
+        Object returnAnswer = solution( Integer.parseInt(params[0].toString()) );
+
+        return returnAnswer;
     }
 
     /**
@@ -15,7 +16,7 @@ class Solution {
      * @param storey : 현재 층
      * @return : 0층 까지 도달하기 위한 이동 수
      */
-    public int solution(int storey) throws Exception {
+    public int solution(int storey) {
         int answer = 0;
         
         int tmp_storey = storey;

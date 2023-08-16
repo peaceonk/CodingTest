@@ -1,5 +1,6 @@
-package util;
+package utils;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -31,11 +32,16 @@ public class JsonReader {
 
         JSONParser parser = new JSONParser();
 
-        String projectPath = "C:\\Users\\BD\\Desktop\\Projects\\vscode\\CodingTest\\";
-        String solutionCommonPath = "src\\test\\java\\programmers\\";
-        String jsonFilePath = projectPath + solutionCommonPath + solutionEachPath;
-
         try {
+
+            File file = new File(".");
+            File projectFile = file.getAbsoluteFile();
+            String projectPath = projectFile.getParent();
+            //System.out.println("현재 프로젝트의 경로 : " + projectPath );
+
+            String solutionCommonPath = "/src/test/java/";
+            String jsonFilePath = projectPath + solutionCommonPath + solutionEachPath;
+
             // JSON 파일 읽기
             Reader reader = new FileReader(jsonFilePath);
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
