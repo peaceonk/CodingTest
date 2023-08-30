@@ -1,4 +1,4 @@
-package programmers.Lv2.JAVA_마법의엘리베이터;
+package programmers.Lv2.JAVA_귤고르기;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,7 +17,6 @@ import utils.DataType;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TestSolution {
-
     Solution solution = new Solution();
 
     DataType dataType = new DataType();
@@ -91,16 +90,21 @@ class TestSolution {
 
         Object expected =null;
         Object actual = null;
+
+        System.out.println( testCaseMap.toString());
         
         // Map TestCaseMap = testCaseMap
         
         Object[] returnArr = dataType.makeReturnArr((Object) testCaseMap.get("return"), (String) DATA_TYPES_MAP.get("return"));
+        System.out.println( returnArr.toString());
 
         testCaseMap.remove("return");
 
         Collection<Object> tcParamsCol = testCaseMap.values();
         List<Object> tcParamsList = new ArrayList<>(tcParamsCol);
         Object[] tcParamsArr = tcParamsList.toArray();
+
+        System.out.println("tcParamsArr : " + (String) Arrays.toString(tcParamsArr));
         
         System.out.println("-".repeat(30) + testCaseNum + " Solution Start " + "-".repeat(30));
         try{

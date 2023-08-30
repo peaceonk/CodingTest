@@ -5,10 +5,18 @@ import java.lang.Math;
 class Solution {
 
     public Object solution(Object ... params) throws Exception {
-        System.out.println("Parameter : "+  Integer.parseInt(params[0].toString()) );
-        Object returnAnswer = solution( Integer.parseInt(params[0].toString()) );
+        Object returnAnswer;
 
-        return returnAnswer;
+        try{
+            // int k = Integer.parseInt(params[0].toString());
+            returnAnswer = solution(params[0]);
+            
+            return returnAnswer;
+        } catch(Exception e) {
+            System.err.println("Common solution Error : " + e.getMessage());
+            return null;
+        }
+        
     }
 
     /**

@@ -1,14 +1,21 @@
 {
-    "case_1" : {
-        "param_1" : 9554,
-        "result" : 14
+    "Time_Limit" : 1000,
+    "Data_Types" : {
+        "storey" : "int",
+        "return" : "int"
     },
-    "case_2" : {
-        "param_1" : 9354,
-        "result" : 14
-    },
-    "case_3" : {
-        "param_1" : 4554,
-        "result" : 18
+    "Test_Cases" : {
+        "case_1" : {
+            "storey" : 9554,
+            "return" : 14
+        },
+        "case_2" : {
+            "storey" : 9354,
+            "return" : 14
+        },
+        "case_3" : {
+            "storey" : 4554,
+            "return" : 18
+        }
     }
 }

@@ -3,8 +3,23 @@ package programmers.Lv2.JAVA_귤고르기;
 import java.util.Arrays;
 
 class Solution {
-    
-    public int solution_one(int k, int[] tangerine) {
+
+    public Object solution(Object ... params) throws Exception {
+        Object returnAnswer;
+
+        try{
+            // int k = Integer.parseInt(params[0].toString());
+            returnAnswer = solution(params[0], params[1]);
+            
+            return returnAnswer;
+        } catch(Exception e) {
+            System.err.println("Common solution Error : " + e.getMessage());
+            return null;
+        }
+        
+    }
+
+    public int solution(int k, int[] tangerine) {
         int answer = 0;
         
         //int tangerine_len = tangerine.length;
